@@ -77,17 +77,17 @@ class AppFOTA(OTAState):
             return False
 
     def get_filename(self, url):
-        filename = url.split("/")[-1]
+        parts = url.split('/')
+        last_parts = parts[-2:]
+        filtered_parts = [p for p in last_parts if p != 'code']
+        filename = '/'.join(filtered_parts)
         return filename
         
     def get_path_from_url(self, url):
         path = ""
         if url:
             filename = self.get_filename(url)
-            if "modules" in url:
-                path = "/usr/modules/{}".format(filename)
-            else:
-                path = "/usr/{}".format(filename)
+            path = "/usr/{}".format(filename)
         return path
     
     def process_mul_files_fota(self, targetFWUrl, targetFWVer):
